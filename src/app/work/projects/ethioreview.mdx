@@ -1,0 +1,27 @@
+---
+title: "EthioReview — Business testimonials at scale"
+publishedAt: "2024-08-01"
+summary: "Microservices with gRPC and RabbitMQ; PostgreSQL EAV schema for dynamic business profile fields."
+images:
+  - "/images/gallery/vertical-2.jpg"
+---
+
+## Problem
+
+Ethiopia lacked a dedicated business review and testimonial platform. Businesses differ wildly in what they want to display; rigid tables would mean endless migrations for every new attribute.
+
+## Tech stack
+
+- **Microservices** with **gRPC** between core services
+- **RabbitMQ** for asynchronous events (notifications, search indexing, moderation)
+- **PostgreSQL** with **Entity-Attribute-Value (EAV)** for flexible profiles
+
+## What I built
+
+- End-to-end delivery as lead analyst and engineer: domain model, service boundaries, and client applications.
+- **gRPC** interfaces for low-latency internal calls; **RabbitMQ** for decoupled side effects and resilience under load.
+- **EAV modeling** so businesses could define custom fields without schema churn — with indexing and query strategies to keep common paths fast.
+
+## Outcome
+
+**Ethiopia’s first** dedicated testimonial platform — technically able to absorb diverse business types through **dynamic data modeling** instead of one-size-fits-all columns.

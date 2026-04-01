@@ -1,0 +1,29 @@
+---
+title: "When the browser meets the cabinet"
+subtitle: "Integrating ERP with signatures, kiosks, and smart storage"
+summary: "How I think about connecting modern web ERPs to e-signature pads, biometric kiosks, and smart document cabinets — reliability, security, and front-desk reality."
+image: "/images/gallery/horizontal-2.jpg"
+publishedAt: "2026-01-22"
+tag: "Full-stack"
+---
+
+Recruiters often scan for “full-stack.” **Hardware integration** is one of the fastest ways to prove you mean it: the UI is not the product; the **complete transaction** is — including what happens at the desk, the kiosk, and the **smart cabinet**.
+
+## Problem
+
+Government and enterprise ERPs are sold as “digital transformation,” but citizens still **sign**, **scan**, and **drop** physical artifacts. If your stack stops at React forms, operations fall back to shadow processes and spreadsheets.
+
+## Approach
+
+- **Model the physical event as a first-class domain event.** Cabinet door opened, document deposited, signature captured — each becomes an auditable fact tied to a case or transaction ID, not a silent side effect.
+- **Prefer thin local agents over browser plugins.** Browsers are sandboxed for good reasons. A small, signed **local service** or vendor SDK bridge often survives OS updates better than exotic extensions.
+- **Design for flaky networks.** Front offices lose Wi‑Fi. Queue events locally when needed, show honest UI states (“saved, will sync”), and never lose the user’s place in the flow.
+- **Security by posture, not slogans.** Treat devices as **semi-trusted**: authenticate sessions, rotate credentials, and limit what a compromised kiosk can do compared to a staff workstation.
+
+## Lessons
+
+- **Vendor docs lie a little.** Budget spike time for firmware quirks, driver versions, and “works on machine A only.”
+- **UX is operational.** If clerks need six clicks to recover from a failed scan, they will skip the system. Error paths deserve the same love as happy paths.
+- **Observability saves field trips.** Log device class, firmware, and correlation IDs so support can see *which* cabinet at *which* site failed — before someone flies there.
+
+If you can narrate **one** hardware-heavy project clearly — signatures, kiosks, or smart storage — you signal something rare: you ship software that still works when the world is not a Chrome tab.

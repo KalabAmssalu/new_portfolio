@@ -1,0 +1,29 @@
+---
+title: "FHIR in a multi-tenant EHR"
+subtitle: "Interoperability boundaries that survive real hospital operations"
+summary: "Practical notes on using HL7 FHIR inside a multi-tenant electronic health record: where standards help, where they hurt, and what to lock down early."
+image: "/images/gallery/horizontal-1.jpg"
+publishedAt: "2026-02-10"
+tag: "Health tech"
+---
+
+When you promise **global interoperability**, FHIR is the right default — but tenants, workflows, and national profiles do not line up with a clean textbook model. This is how I think about shipping FHIR inside a **multi-tenant EHR** without painting the team into a corner.
+
+## Problem
+
+You need external systems to consume clinical data through **standard resources and APIs**, while each hospital still expects custom forms, local coding systems, and strict isolation from other tenants. If you model everything as “just FHIR,” you leak tenant concerns into shared layers; if you hide FHIR entirely, you rebuild integrations by hand forever.
+
+## Approach
+
+- **Separate “clinical truth” from “exchange shape.”** Persist what the hospital operates on; map to FHIR (R4 or your national baseline) at boundedaries: outbound APIs, bulk export, and partner onboarding — not necessarily in every internal read path.
+- **Version and profile explicitly.** Lock a **FHIR version** and document which **profiles** you support. “We support FHIR” is not a spec; “Patient, Encounter, Observation per X IG vY” is.
+- **Tenant isolation first.** Authorization must resolve tenant → organization → user before any resource ID is meaningful. FHIR’s URLs are not a substitute for authZ.
+- **Start with a small, high-value surface.** Patient demographics, encounters, and a slice of observations often unlock the first integrations; expand resource types when you have a consumer contract, not when someone reads the full spec.
+
+## Lessons
+
+- **Custom extensions** will appear — budget time for governance (who can define them, how they map to partner systems).
+- **Performance** matters on hot lists (active patients, today’s appointments). Not every query should be a naive FHIR search against normalized tables.
+- **Testing** against reference servers or partner sandboxes early avoids “it validates in Postman but fails in production.”
+
+FHIR is not a feature flag — it is a **contract**. Treat it like one and your EHR can grow with new hospitals without rewriting the core for every integration.

@@ -1,0 +1,31 @@
+---
+title: "EAV in PostgreSQL for business profiles"
+subtitle: "Flexible fields without a migration per customer"
+summary: "When Entity-Attribute-Value modeling in PostgreSQL is worth the complexity — and how to keep EthioReview-style dynamic business attributes queryable and honest."
+image: "/images/gallery/vertical-1.jpg"
+publishedAt: "2025-12-05"
+tag: "Data modeling"
+---
+
+Marketplaces and directories live or die on **how well the product adapts to messy reality**. For **EthioReview**, businesses wanted different profile fields without us shipping a migration for every new category. **EAV (Entity-Attribute-Value)** in **PostgreSQL** was the lever.
+
+## Problem
+
+A rigid `businesses` table with dozens of nullable columns does not scale socially: sales promises “we can add a field next week,” engineering says “that is a migration and backfill.” You need **tenant-defined attributes** with sane validation and reporting.
+
+## Approach
+
+- **Core identity stays relational.** Stable columns for IDs, slug, owner, verification state — things every business shares.
+- **EAV for the long tail.** `(entity_id, attribute_key, value_text | value_num | value_bool | value_json)` (or separate typed tables) stores the variable shape. **Attribute definitions** live in metadata rows: type, required, allowed values, display group.
+- **Index the paths you actually query.** Partial indexes on hot keys, materialized views for search facets, or a **JSONB** sidecar for read-optimized snapshots if profiling shows pain.
+- **Validate at the application layer** with schemas generated from attribute definitions — the database enforces types and NOT NULL where possible, but semantic rules belong in code you can test.
+
+## Trade-offs
+
+- **Joins multiply.** List screens need discipline: prefetch attribute rows in bulk, avoid N+1 per cell.
+- **Reporting is harder than a wide table.** BI tools want star schemas; plan exports or nightly aggregates if finance or ops needs cubes.
+- **Governance.** Who can create a new attribute? If everyone can, you get `phone_number`, `Phone`, and `tel` in production.
+
+## Lessons
+
+EAV is not “no schema” — it is **deferred schema** with **explicit metadata**. Used intentionally, it lets a platform like a national review product feel custom per vertical without forking the codebase per customer.

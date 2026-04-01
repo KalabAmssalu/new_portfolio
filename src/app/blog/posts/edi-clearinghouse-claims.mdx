@@ -1,0 +1,29 @@
+---
+title: "EDI, clearinghouses, and claim automation"
+subtitle: "A systems view of insurance exchange"
+summary: "High-level architecture patterns for EDI-based medical claim exchange and clearinghouse-style automation — reliability, idempotency, and operator visibility."
+image: "/images/gallery/horizontal-3.jpg"
+publishedAt: "2025-11-18"
+tag: "Insurance tech"
+---
+
+Insurance cores drown in **volume and variance**: every partner tweaks segments, qualifiers, and timelines. **EDI** gives you a **lingua franca**; a **clearinghouse** mindset gives you **control** before bad data hits policy and finance systems.
+
+## Problem
+
+Raw files arrive from providers and intermediaries. Some batches are huge; some are wrong. Without a dedicated **ingress and filtering** layer, your core spends engineering time on parsing exceptions instead of paying claims correctly.
+
+## Approach
+
+- **Normalize at the edge.** Ingest EDI (or API equivalents), validate against **trading partner agreements**, and persist **canonical internal messages** your domain services understand.
+- **Idempotency everywhere.** Replays and duplicate submissions are normal. Keys derived from sender, control numbers, and content hashes prevent double payment and simplify support.
+- **Filtering agents as explicit services.** Eligibility checks, duplicate detection, fraud heuristics, and business edits should be **composable pipelines** with clear logs — not one 5,000-line job.
+- **Human queues for the last mile.** Automate the 90% case; surface the 10% with **operator tooling**: original payload, rule that fired, override with audit.
+
+## Lessons
+
+- **Observability beats heroics.** Per-partner dashboards (volume, error rate, SLA) turn Friday outages into Tuesday fixes.
+- **Version partner maps.** When a payer changes a segment requirement, you need to know **which** mapping version produced a given claim.
+- **Core stays boring.** Let the clearinghouse absorb chaos so pricing, benefits, and payment stay deterministic.
+
+This is the shape of the **TillaHealth**-class problem: not “parse a file,” but **run a reliable exchange** between members, providers, and the insurer’s brain.
