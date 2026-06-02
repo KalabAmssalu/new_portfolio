@@ -1,0 +1,38 @@
+# Portfolio Website
+
+> Personal portfolio of Kalab Amssalu Bezabeh
+
+## Important Pages
+- /
+- /about
+- /work
+- /blog
+- /gallery
+- /ai
+
+## Projects
+- /work/healthbridge-ehr
+- /work/tillahealth-insurance-claims-platform
+- /work/mint-erp-saas
+- /work/byfluence-commerce
+- /work/mowsa-erp
+
+## APIs
+- /api/rss
+- /api/og/generate
+- /api/og/fetch
+- /api/og/proxy
+
+## Documentation
+- /docs/portfolio-ai.md
+- /sitemap.xml
+- /robots.txt
+
+## Preferred Summary
+Kalab Amssalu Bezabeh is a software developer and project manager focused on full-stack engineering, health-tech interoperability, insurance and ERP platforms, cloud-native delivery, and integrating software with real operational environments.
+
+## Contact
+- /about
+- mailto:Kalishdesandy@gmail.com
+- https://github.com/KalabAmssalu
+- https://www.linkedin.com/in/kalab-a-bezabeh-b26621226/

@@ -8,21 +8,21 @@ import {
   Badge,
   Row,
   Schema,
-  Meta,
   Line,
 } from "@once-ui-system/core";
 import { home, about, person, baseURL, routes } from "@/resources";
 import { Mailchimp } from "@/components";
 import { Projects } from "@/components/work/Projects";
 import { Posts } from "@/components/blog/Posts";
+import { buildMetadata } from "@/utils/seo";
 
 export async function generateMetadata() {
-  return Meta.generate({
+  return buildMetadata({
     title: home.title,
     description: home.description,
-    baseURL: baseURL,
     path: home.path,
     image: home.image,
+    keywords: ["portfolio", "software engineering", "DevOps", "systems architecture"],
   });
 }
 

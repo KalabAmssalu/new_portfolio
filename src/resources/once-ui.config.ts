@@ -13,8 +13,8 @@ import {
 } from "@/types";
 import { home } from "./index";
 
-// Replace with your production domain before launch (SEO, OG URLs, schema)
-const baseURL: string = "https://example.com";
+// Set NEXT_PUBLIC_SITE_URL in production to the canonical public origin.
+const baseURL: string = (process.env.NEXT_PUBLIC_SITE_URL || "https://example.com").replace(/\/$/, "");
 
 const routes: RoutesConfig = {
   "/": true,
@@ -22,6 +22,7 @@ const routes: RoutesConfig = {
   "/work": true,
   "/blog": true,
   "/gallery": true,
+  "/ai": true,
 };
 
 const display: DisplayConfig = {
@@ -188,14 +189,14 @@ const schema: SchemaConfig = {
   type: "Person",
   name: "Kalab Amssalu Bezabeh",
   description: home.description,
-  email: "hello@kalab.dev",
+  email: "Kalishdesandy@gmail.com",
 };
 
 // Optional: replace with your real profile URLs for structured data
 const sameAs: SameAsConfig = {
-  threads: "https://www.threads.com/",
-  linkedin: "https://www.linkedin.com/",
-  discord: "https://discord.com/",
+  threads: "https://github.com/KalabAmssalu",
+  linkedin: "https://www.linkedin.com/in/kalab-a-bezabeh-b26621226/",
+  discord: "mailto:Kalishdesandy@gmail.com",
 };
 
 // social sharing configuration for blog posts

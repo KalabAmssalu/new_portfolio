@@ -75,7 +75,7 @@ export const Header = () => {
         <Row paddingLeft="12" fillWidth vertical="center" textVariant="body-default-s">
           {display.location && <Row s={{ hide: true }}>{person.location}</Row>}
         </Row>
-        <Row fillWidth horizontal="center">
+        <Row as="nav" fillWidth horizontal="center" aria-label="Primary navigation">
           <Row
             background="page"
             border="neutral-alpha-weak"
@@ -162,6 +162,25 @@ export const Header = () => {
                       prefixIcon="gallery"
                       href="/gallery"
                       selected={pathname.startsWith("/gallery")}
+                    />
+                  </Row>
+                </>
+              )}
+              {routes["/ai"] && (
+                <>
+                  <Row s={{ hide: true }}>
+                    <ToggleButton
+                      prefixIcon="document"
+                      href="/ai"
+                      label="AI"
+                      selected={pathname.startsWith("/ai")}
+                    />
+                  </Row>
+                  <Row hide s={{ hide: false }}>
+                    <ToggleButton
+                      prefixIcon="document"
+                      href="/ai"
+                      selected={pathname.startsWith("/ai")}
                     />
                   </Row>
                 </>

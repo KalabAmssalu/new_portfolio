@@ -7,7 +7,7 @@ const person: Person = {
   name: "Kalab Amssalu Bezabeh",
   role: "Software Developer & Project Manager",
   avatar: "/images/avatar.jpg",
-  email: "hello@kalab.dev",
+  email: "Kalishdesandy@gmail.com",
   location: "Africa/Addis_Ababa",
   languages: ["Amharic", "English", "Afan Oromo"],
 };
@@ -22,13 +22,13 @@ const social: Social = [
   {
     name: "GitHub",
     icon: "github",
-    link: "https://github.com/",
+    link: "https://github.com/KalabAmssalu",
     essential: true,
   },
   {
     name: "LinkedIn",
     icon: "linkedin",
-    link: "https://www.linkedin.com/",
+    link: "https://www.linkedin.com/in/kalab-a-bezabeh-b26621226/",
     essential: true,
   },
   {

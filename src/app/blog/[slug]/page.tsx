@@ -1,7 +1,6 @@
 import { notFound } from "next/navigation";
 import { CustomMDX, ScrollToHash } from "@/components";
 import {
-  Meta,
   Schema,
   Column,
   Heading,
@@ -21,6 +20,7 @@ import { Metadata } from "next";
 import React from "react";
 import { Posts } from "@/components/blog/Posts";
 import { ShareSection } from "@/components/blog/ShareSection";
+import { buildCanonical, buildMetadata } from "@/utils/seo";
 
 export async function generateStaticParams(): Promise<{ slug: string }[]> {
   const posts = getPosts(["src", "app", "blog", "posts"]);
@@ -44,12 +44,12 @@ export async function generateMetadata({
 
   if (!post) return {};
 
-  return Meta.generate({
+  return buildMetadata({
     title: post.metadata.title,
     description: post.metadata.summary,
-    baseURL: baseURL,
     image: post.metadata.image || `/api/og/generate?title=${post.metadata.title}`,
     path: `${blog.path}/${post.slug}`,
+    keywords: [post.metadata.tag || "engineering", "article", "blog"],
   });
 }
 
@@ -65,10 +65,27 @@ export default async function Blog({ params }: { params: Promise<{ slug: string 
     notFound();
   }
 
-  const avatars =
-    post.metadata.team?.map((person) => ({
-      src: person.avatar,
-    })) || [];
+  const articleStructuredData = {
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    headline: post.metadata.title,
+    description: post.metadata.summary,
+    datePublished: post.metadata.publishedAt,
+    dateModified: post.metadata.publishedAt,
+    author: {
+      "@type": "Person",
+      name: person.name,
+      url: `${baseURL}${about.path}`,
+    },
+    publisher: {
+      "@type": "Organization",
+      name: `${person.name} Portfolio`,
+      url: baseURL,
+    },
+    url: buildCanonical(`${blog.path}/${post.slug}`),
+    image: post.metadata.image ? [`${baseURL}${post.metadata.image}`] : undefined,
+    articleSection: post.metadata.tag || "Engineering",
+  };
 
   return (
     <Row fillWidth>
@@ -91,6 +108,13 @@ export default async function Blog({ params }: { params: Promise<{ slug: string 
               name: person.name,
               url: `${baseURL}${about.path}`,
               image: `${baseURL}${person.avatar}`,
+            }}
+          />
+          <script
+            id={`blog-ld-${post.slug}`}
+            type="application/ld+json"
+            dangerouslySetInnerHTML={{
+              __html: JSON.stringify(articleStructuredData),
             }}
           />
           <Column maxWidth="s" gap="16" horizontal="center" align="center">

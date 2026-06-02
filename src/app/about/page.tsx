@@ -8,7 +8,6 @@ import {
   Media,
   Tag,
   Text,
-  Meta,
   Schema,
   Row,
 } from "@once-ui-system/core";
@@ -16,14 +15,15 @@ import { baseURL, about, person, social } from "@/resources";
 import TableOfContents from "@/components/about/TableOfContents";
 import styles from "@/components/about/about.module.scss";
 import React from "react";
+import { buildMetadata } from "@/utils/seo";
 
 export async function generateMetadata() {
-  return Meta.generate({
+  return buildMetadata({
     title: about.title,
     description: about.description,
-    baseURL: baseURL,
     image: `/api/og/generate?title=${encodeURIComponent(about.title)}`,
     path: about.path,
+    keywords: ["about", "experience", "skills", "technical profile"],
   });
 }
 
@@ -94,6 +94,12 @@ export default function About() {
             horizontal="center"
           >
             <Avatar src={person.avatar} size="xl" />
+            <Column gap="4" horizontal="center" align="center">
+              <Text variant="heading-strong-m">{person.name}</Text>
+              <Text variant="body-default-s" onBackground="neutral-weak">
+                {person.role}
+              </Text>
+            </Column>
             <Row gap="8" vertical="center">
               <Icon onBackground="accent-weak" name="globe" />
               {person.location}

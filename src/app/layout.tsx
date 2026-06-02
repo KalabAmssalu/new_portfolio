@@ -3,34 +3,83 @@ import "@once-ui-system/core/css/tokens.css";
 import "@/resources/custom.css";
 
 import classNames from "classnames";
+import type { Metadata } from "next";
 
 import {
   Background,
   Column,
   Flex,
-  Meta,
   opacity,
   RevealFx,
   SpacingToken,
 } from "@once-ui-system/core";
-import { Footer, Header, RouteGuard, Providers } from "@/components";
-import { baseURL, effects, fonts, style, dataStyle, home } from "@/resources";
+import { Footer, Header, RouteGuard, Providers, StructuredData } from "@/components";
+import { baseURL, effects, fonts, style, dataStyle, home, person, social } from "@/resources";
+import { buildMetadata } from "@/utils/seo";
 
-export async function generateMetadata() {
-  return Meta.generate({
+export const metadata: Metadata = buildMetadata({
     title: home.title,
     description: home.description,
-    baseURL: baseURL,
     path: home.path,
     image: home.image,
+    keywords: [
+      "Kalab Amssalu Bezabeh",
+      "software engineer",
+      "project manager",
+      "full-stack developer",
+      "AI-ready portfolio",
+      "health tech",
+      "DevOps",
+    ],
   });
-}
 
 export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const socialLinks = social
+    .filter((entry) => entry.link.startsWith("http"))
+    .map((entry) => entry.link);
+
+  const rootStructuredData = {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "Person",
+        "@id": `${baseURL}#person`,
+        name: person.name,
+        jobTitle: person.role,
+        image: `${baseURL}${person.avatar}`,
+        url: baseURL,
+        email: person.email,
+        sameAs: socialLinks,
+        knowsLanguage: person.languages,
+      },
+      {
+        "@type": "Organization",
+        "@id": `${baseURL}#organization`,
+        name: `${person.name} Portfolio`,
+        url: baseURL,
+        founder: {
+          "@id": `${baseURL}#person`,
+        },
+        sameAs: socialLinks,
+      },
+      {
+        "@type": "WebSite",
+        "@id": `${baseURL}#website`,
+        url: baseURL,
+        name: `${person.name} Portfolio`,
+        description: home.description,
+        inLanguage: "en",
+        publisher: {
+          "@id": `${baseURL}#organization`,
+        },
+      },
+    ],
+  };
+
   return (
     <Flex
       suppressHydrationWarning
@@ -107,6 +156,7 @@ export default async function RootLayout({
             `,
           }}
         />
+        <StructuredData id="root-json-ld" data={rootStructuredData} />
       </head>
       <Providers>
         <Column
@@ -162,7 +212,7 @@ export default async function RootLayout({
           </RevealFx>
           <Flex fillWidth minHeight="16" s={{ hide: true }} />
           <Header />
-          <Flex zIndex={0} fillWidth padding="l" horizontal="center" flex={1}>
+          <Flex as="main" zIndex={0} fillWidth padding="l" horizontal="center" flex={1} aria-label="Main content">
             <Flex horizontal="center" fillWidth minHeight="0">
               <RouteGuard>{children}</RouteGuard>
             </Flex>

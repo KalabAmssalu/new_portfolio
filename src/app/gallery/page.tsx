@@ -1,14 +1,15 @@
-import { Flex, Meta, Schema } from "@once-ui-system/core";
+import { Flex, Schema } from "@once-ui-system/core";
 import GalleryView from "@/components/gallery/GalleryView";
 import { baseURL, gallery, person } from "@/resources";
+import { buildMetadata } from "@/utils/seo";
 
 export async function generateMetadata() {
-  return Meta.generate({
+  return buildMetadata({
     title: gallery.title,
     description: gallery.description,
-    baseURL: baseURL,
     image: `/api/og/generate?title=${encodeURIComponent(gallery.title)}`,
     path: gallery.path,
+    keywords: ["gallery", "portfolio images"],
   });
 }
 

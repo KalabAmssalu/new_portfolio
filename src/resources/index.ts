@@ -24,3 +24,9 @@ export {
   effects,
   dataStyle,
 } from "./once-ui.config";
+
+export {
+  organizationSchemaExample,
+  personSchemaExample,
+  websiteSchemaExample,
+} from "./schema-examples";

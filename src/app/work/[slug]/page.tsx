@@ -1,7 +1,6 @@
 import { notFound } from "next/navigation";
 import { getPosts } from "@/utils/utils";
 import {
-  Meta,
   Schema,
   AvatarGroup,
   Button,
@@ -20,6 +19,7 @@ import { formatDate } from "@/utils/formatDate";
 import { ScrollToHash, CustomMDX } from "@/components";
 import { Metadata } from "next";
 import { Projects } from "@/components/work/Projects";
+import { buildMetadata, buildCanonical } from "@/utils/seo";
 
 export async function generateStaticParams(): Promise<{ slug: string }[]> {
   const posts = getPosts(["src", "app", "work", "projects"]);
@@ -43,12 +43,12 @@ export async function generateMetadata({
 
   if (!post) return {};
 
-  return Meta.generate({
+  return buildMetadata({
     title: post.metadata.title,
     description: post.metadata.summary,
-    baseURL: baseURL,
     image: post.metadata.image || `/api/og/generate?title=${post.metadata.title}`,
     path: `${work.path}/${post.slug}`,
+    keywords: ["project", "software application", "case study"],
   });
 }
 
@@ -73,6 +73,26 @@ export default async function Project({
       src: person.avatar,
     })) || [];
 
+  const projectStructuredData = {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    name: post.metadata.title,
+    description: post.metadata.summary,
+    applicationCategory: "BusinessApplication",
+    operatingSystem: "Web",
+    author: {
+      "@type": "Person",
+      name: person.name,
+      url: `${baseURL}${about.path}`,
+    },
+    datePublished: post.metadata.publishedAt,
+    url: buildCanonical(`${work.path}/${post.slug}`),
+    image: (post.metadata.images || []).map((image) => `${baseURL}${image}`),
+    keywords: [post.metadata.tag, "software engineering", "architecture", "DevOps"]
+      .filter(Boolean)
+      .join(", "),
+  };
+
   return (
     <Column as="section" maxWidth="m" horizontal="center" gap="l">
       <Schema
@@ -90,6 +110,13 @@ export default async function Project({
           name: person.name,
           url: `${baseURL}${about.path}`,
           image: `${baseURL}${person.avatar}`,
+        }}
+      />
+      <script
+        id={`project-ld-${post.slug}`}
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(projectStructuredData),
         }}
       />
       <Column maxWidth="s" gap="16" horizontal="center" align="center">
@@ -119,7 +146,13 @@ export default async function Project({
         </Row>
       </Row>
       {post.metadata.images.length > 0 && (
-        <Media priority aspectRatio="16 / 9" radius="m" alt="image" src={post.metadata.images[0]} />
+        <Media
+          priority
+          aspectRatio="16 / 9"
+          radius="m"
+          alt={`${post.metadata.title} project cover`}
+          src={post.metadata.images[0]}
+        />
       )}
       <Column style={{ margin: "auto" }} as="article" maxWidth="xs">
         <CustomMDX source={post.content} />
