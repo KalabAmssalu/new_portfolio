@@ -5,7 +5,7 @@ const person: Person = {
   firstName: "Kalab",
   lastName: "Amssalu Bezabeh",
   name: "Kalab Amssalu Bezabeh",
-  role: "Software Developer & Project Manager",
+  role: "Senior Software Developer & Senior Cloud Engineer",
   avatar: "/images/avatar.jpg",
   email: "Kalishdesandy@gmail.com",
   location: "Africa/Addis_Ababa",
